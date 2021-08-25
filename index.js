@@ -114,6 +114,11 @@ app.delete('/api/products/:id',(req,res)=>{
 })
 
 /******Delete all Products******/ 
+app.delete('/api/products', (req,res)=>{
+   products.splice(0);
+   return res.json(products);
+})
+
 
 
 //Validation function
