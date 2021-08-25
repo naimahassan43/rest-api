@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const Joi = require('joi');
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -33,7 +34,17 @@ const products = [
 
 /*******Insert a Product*****/
 app.use(express.json());
+
 app.post('/api/products',(req,res)=>{
+
+   const {error} = validation(req.body)
+
+   if(error) {
+      return res.status(400).json({
+         message:error.details[0].message
+      });
+   }
+
    const product = {
       id:uuidv4(),
       name:req.body.name,
@@ -50,6 +61,16 @@ app.post('/api/products',(req,res)=>{
 /******Delete a specific Product ******/
 /******Delete all Products******/ 
 
+
+//Validation function
+function validation (body) {
+   const schema =Joi.object({
+      name: Joi.string().min(3).max(20).required(),
+      price:Joi.number().required(),
+   });
+
+   return schema.validate(body);
+}
 
 
 app.listen(3000,()=>{
