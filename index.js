@@ -12,7 +12,9 @@ app.get('/',(req,res) => {
 
 const products = [
    { id: '1', name: 'Mango', price: 123},
-   { id: '2', name: 'Banana', price: 150}
+   { id: '2', name: 'Banana', price: 150},
+   { id: '3', name: 'Banana', price: 250},
+   { id: '4', name: 'Banana', price: 150},
 
 ]
 /******Show list of Products*****/
@@ -97,6 +99,20 @@ app.patch('/api/products/:id',(req,res)=>{
 })
 
 /******Delete a specific Product ******/
+app.delete('/api/products/:id',(req,res)=>{
+   const product = products.find(prod=> prod.id===req.params.id);
+   if(!product){
+      return res.status(404).json({
+         message: 'Product is not found with this ID'
+      })
+   }
+
+   const index = products.findIndex(prod=> prod.id===req.params.id);
+   products.splice(index, 1);
+
+   return res.json(product);
+})
+
 /******Delete all Products******/ 
 
 
