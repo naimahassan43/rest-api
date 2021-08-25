@@ -54,7 +54,7 @@ app.post('/api/products',(req,res)=>{
    return res.json(product);
 })
 
-/******Update a specific Product (PUT)******/
+/******Update a specific Product (PUT== req.body te entire obj dite hoy)******/
 app.put('/api/products/:id',(req,res)=>{
    const {error} = validation(req.body);
    if(error) {
@@ -77,7 +77,24 @@ app.put('/api/products/:id',(req,res)=>{
   });
 
 })
-/******Update a specific Product (PATCH)******/
+/******Update a specific Product (PATCH== only je info update korbo seta dibo)******/
+
+app.patch('/api/products/:id',(req,res)=>{
+   const index = products.findIndex(prod => prod.id ===req.params.id);
+
+   if(index=== -1) {
+      return res.status(404).json({
+         message: 'Product not found with this id'
+      })
+   }
+
+   let updatedProduct = {
+      ...products[index],
+      ...req.body
+   }
+   products[index] = updatedProduct;
+   return res.json({updatedProduct})
+})
 
 /******Delete a specific Product ******/
 /******Delete all Products******/ 
