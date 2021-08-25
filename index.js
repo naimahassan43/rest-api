@@ -17,7 +17,14 @@ const products = [
       res.json(products);
    })
 /******Show a specific Product******/
-
+   app.get('/api/products/:id',(req,res) => {
+      const {id} = req.params;
+      const product = products.find(prod => prod.id === id);
+      if(!product) {
+         return res.status(404).json({error:'No product found with this ID'})
+      }
+   return res.json(product);
+   })
 /*******Insert a Product*****/
 
 /******Update a specific Product (PUT)******/
