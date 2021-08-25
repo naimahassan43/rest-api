@@ -82,6 +82,14 @@ app.put('/api/products/:id',(req,res)=>{
 /******Update a specific Product (PATCH== only je info update korbo seta dibo)******/
 
 app.patch('/api/products/:id',(req,res)=>{
+
+   const {error} = validationForPatch(req.body);
+   if(error) {
+      return res.status(400).json({
+         message:error.details[0].message
+      })
+   }
+
    const index = products.findIndex(prod => prod.id ===req.params.id);
 
    if(index=== -1) {
@@ -131,6 +139,15 @@ function validation (body) {
    return schema.validate(body);
 }
 
+//Validation function for Update method
+function validationForPatch (body) {
+   const schema =Joi.object({
+      name: Joi.string().min(3).max(20),
+      price:Joi.number(),
+   });
+
+   return schema.validate(body);
+}
 
 app.listen(3000,()=>{
    console.log('server is running')
