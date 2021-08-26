@@ -20,7 +20,7 @@ const products = [
 /******Show list of Products*****/
  //route
    app.get('/api/products',(req,res) => {
-      res.json(products);
+      res.status(200).json(products);
    })
 /******Show a specific Product******/
    app.get('/api/products/:id',(req,res) => {
@@ -31,7 +31,7 @@ const products = [
             error:'No product found with this ID'
          })
       }
-   return res.json(product);
+   return res.status(200).json(product);
    })
 
 /*******Insert a Product*****/
@@ -53,7 +53,7 @@ app.post('/api/products',(req,res)=>{
       price:req.body.price,
    }
    products.push(product);
-   return res.json(product);
+   return res.status(201).json(product);
 })
 
 /******Update a specific Product (PUT== req.body te entire obj dite hoy)******/
@@ -73,8 +73,9 @@ app.put('/api/products/:id',(req,res)=>{
    }
   products[index].name = req.body.name;
   products[index].price = req.body.price;
-
-  return res.json({
+  
+//   return res.sendStatus(204);== no content only status
+  return res.status(200).json({
      product: products[index]
   });
 
@@ -103,7 +104,7 @@ app.patch('/api/products/:id',(req,res)=>{
       ...req.body
    }
    products[index] = updatedProduct;
-   return res.json({updatedProduct})
+   return res.status(200).json({updatedProduct})
 })
 
 /******Delete a specific Product ******/
@@ -118,13 +119,13 @@ app.delete('/api/products/:id',(req,res)=>{
    const index = products.findIndex(prod=> prod.id===req.params.id);
    products.splice(index, 1);
 
-   return res.json(product);
+   return res.status(200).json(product);
 })
 
 /******Delete all Products******/ 
 app.delete('/api/products', (req,res)=>{
    products.splice(0);
-   return res.json(products);
+   return res.status(200).json(products);
 })
 
 
